@@ -6,7 +6,7 @@ function Get-EdgeLoginPaths {
         $edgeBasePath = "$($user.FullName)\AppData\Local\Microsoft\Edge\User Data"
         if (Test-Path -Path $edgeBasePath -ErrorAction SilentlyContinue) {
             $loginDataPaths = Get-ChildItem -Path $edgeBasePath -Filter "Login Data" -Recurse -File | Where-Object -Property FullName -NotMatch "Snapshots"
-            foreach ($dataPath in $loginDataPaths) {
+            foreach ($dataPath in $loginDataPaths.FullName) {
                 [pscustomobject]@{
                     UserName = $user.Name
                     EdgeLoginDataPath = $dataPath
