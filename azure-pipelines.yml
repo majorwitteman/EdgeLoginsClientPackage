@@ -13,7 +13,7 @@ steps:
 - task: UniversalPackages@0
   inputs:
     command: 'download'
-    downloadDirectory: '$(System.DefaultWorkingDirectory)'
+    downloadDirectory: '$(Build.StagingDirectory)'
     feedsToUse: 'internal'
     vstsFeed: '7f4600e8-b910-41b9-a1cb-17f4d6e1fe1a/94117e83-c7a8-4e16-bb4a-e3272e2bdcc8'
     vstsFeedPackage: '1c0f1116-3581-4ada-bf69-f57b1f198799'
@@ -22,4 +22,6 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: 'dir'
+    script: | 
+      'dir'
+      'dir $(Build.StagingDirectory)'
