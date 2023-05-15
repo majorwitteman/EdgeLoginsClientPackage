@@ -23,9 +23,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: | 
-      dir
-      dir $(Build.StagingDirectory)
-      $(Build.StagingDirectory)\IntuneWinAppUtil.exe -c . -s Install.ps1 -o $(Build.StagingDirectory)\Package
+      Start-Process -Path $(Build.StagingDirectory)\IntuneWinAppUtil.exe -ArgumentList "-c $(System.DefaultWorkingDirectory)\src -s Install.ps1 -o $(Build.StagingDirectory)\Package" -Wait -NoNewWindow
       Rename-Item $(Build.StagingDirectory)\Package\Install.intunewin EdgeLoginsClientPackage.intunewin
       dir $(Build.StagingDirectory)
 
