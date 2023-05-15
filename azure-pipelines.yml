@@ -25,5 +25,22 @@ steps:
     script: | 
       dir
       dir $(Build.StagingDirectory)
-      $(Build.StagingDirectory)\IntuneWinAppUtil.exe -c . -s Install.ps1 -o $(Build.StagingDirectory)
-      Rename-Item $(Build.StagingDirectory)\Install.intunewin EdgeLoginsClientPackage.intunewin
+      $(Build.StagingDirectory)\IntuneWinAppUtil.exe -c . -s Install.ps1 -o $(Build.StagingDirectory)\Package
+      Rename-Item $(Build.StagingDirectory)\Package\Install.intunewin EdgeLoginsClientPackage.intunewin
+      dir $(Build.StagingDirectory)
+
+- task: UniversalPackages@0
+  inputs:
+    command: 'publish'
+    publishDirectory: '$(Build.StagingDirectory)\Package'
+    vstsFeedPackagePublish: 'edge-logins-client-package'
+    feedsToUsePublish: 'internal'
+    vstsFeedPublish: '7f4600e8-b910-41b9-a1cb-17f4d6e1fe1a/94117e83-c7a8-4e16-bb4a-e3272e2bdcc8'
+    versionOption: 'patch'
+    publishedPackageVar: 'PackageOutput'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $(PackageOutput)
