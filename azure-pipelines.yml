@@ -23,5 +23,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: | 
-      'dir'
-      'dir $(Build.StagingDirectory)'
+      dir
+      dir $(Build.StagingDirectory)
+      $(Build.StagingDirectory)\IntuneWinAppUtil.exe -c . -s Install.ps1 -o $(Build.StagingDirectory)
+      Rename-Item $(Build.StagingDirectory)\Install.intunewin EdgeLoginsClientPackage.intunewin
