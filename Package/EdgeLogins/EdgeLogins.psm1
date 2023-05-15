@@ -1,0 +1,1 @@
+Get-ChildItem "$PSScriptRoot\Functions" -File | ForEach-Object { . $_.FullName }
