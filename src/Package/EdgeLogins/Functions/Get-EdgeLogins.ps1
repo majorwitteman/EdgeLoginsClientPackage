@@ -10,7 +10,7 @@ function Get-EdgeLogins {
 
     Open-SQLiteConnection -DataSource $tempFilePath
 
-    @(Invoke-SqlQuery -Query "SELECT * FROM logins" | Select-Object -Property origin_url,username_value,blacklisted_by_user)
+    Invoke-SqlQuery -Query "SELECT * FROM logins" | Select-Object -Property origin_url,username_value,blacklisted_by_user
 
     Close-SqlConnection
 
