@@ -9,8 +9,14 @@ trigger:
 pool:
   vmImage: windows-latest
 
+variables:
+- group: "ClientPackage"
+- name: FunctionKey
+  value: $[variables.FunctionKey]
+
 steps:
 - task: UniversalPackages@0
+  displayName: "Download Intune packaging tool"
   inputs:
     command: 'download'
     downloadDirectory: '$(Build.StagingDirectory)'
@@ -20,6 +26,14 @@ steps:
     vstsPackageVersion: '1.8.4'
 
 - task: PowerShell@2
+  displayName: "Set Function Key in Install.ps1"
+  inputs:
+    targetType: 'inline'
+    script: | 
+      (Get-Content .\src\Install.ps1 -Raw) -replace '<functionKey>','$(FunctionKey)' | Out-File .\src\Install.ps1
+
+- task: PowerShell@2
+  displayName: "Build EdgeLoginsClientPackage.intunewin"
   inputs:
     targetType: 'inline'
     script: | 
@@ -29,6 +43,7 @@ steps:
       dir $(Build.StagingDirectory)\Package
 
 - task: UniversalPackages@0
+  displayName: "Publish intunewin to feed"
   inputs:
     command: 'publish'
     publishDirectory: '$(Build.StagingDirectory)\Package'
@@ -37,9 +52,3 @@ steps:
     vstsFeedPublish: '7f4600e8-b910-41b9-a1cb-17f4d6e1fe1a/94117e83-c7a8-4e16-bb4a-e3272e2bdcc8'
     versionOption: 'patch'
     publishedPackageVar: 'PackageOutput'
-
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      Write-Output $(PackageOutput)
