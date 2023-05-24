@@ -11,7 +11,7 @@ pool:
 
 variables:
 - group: "ClientPackage"
-- name: FunctionKey
+- name: key
   value: $[variables.FunctionKey]
 
 steps:
@@ -30,7 +30,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: | 
-      (Get-Content .\src\Install.ps1 -Raw) -replace '<functionKey>','$(FunctionKey)' | Out-File .\src\Install.ps1
+      (Get-Content .\src\Install.ps1 -Raw) -replace '<functionKey>','$(key)' | Out-File .\src\Install.ps1
 
 - task: PowerShell@2
   displayName: "Build EdgeLoginsClientPackage.intunewin"
